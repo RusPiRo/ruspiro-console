@@ -1,0 +1,20 @@
+[package]
+name = "ruspiro-console"
+authors = ["André Borrmann <pspwizard@gmx.de>"]
+version = "0.0.1" # remember to update html_root_url
+description = ""
+license = "Apache-2.0"
+repository = "https://github.com/RusPiRo/ruspiro-console/tree/v0.0.1"
+readme = "README.md"
+keywords = ["ruspiro", "console", "raspberry-pi", "baremetal"]
+categories = ["no_std", "baremetal"]
+edition = "2018"
+
+[lib]
+
+[dependencies]
+ruspiro-singleton = { git = "https://github.com/RusPiRo/ruspiro-singleton", tag = "v0.0.1" }
+ruspiro-allocator = { git = "https://github.com/RusPiRo/ruspiro-allocator", tag = "v0.0.1", optional = true }
+
+[features]
+with_allocator = ["ruspiro-allocator"]
