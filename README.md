@@ -37,9 +37,13 @@ fn demo() {
 ```
 
 To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
-for excample is done in the Uart like so:
+for example is done in the Uart like so:
 ```
 impl ConsoleImpl for Uart0 {
+    fn putc(&self, c: char) {
+        self.send_char(c);
+    }
+
     fn puts(&self, s: &str) {
         self.send_string(s);
     }

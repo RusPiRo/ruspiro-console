@@ -33,6 +33,10 @@
 //! for excample is done in the Uart like so:
 //! ```
 //! impl ConsoleImpl for Uart0 {
+//!     fn putc(&self, c: char) {
+//!         self.send_char(c);
+//!     }
+//! 
 //!     fn puts(&self, s: &str) {
 //!         self.send_string(s);
 //!     }
@@ -89,7 +93,7 @@ pub static CONSOLE: Singleton<Console> = Singleton::<Console>::new(
     );
 
 /// The base printing function hidden behind the print! and println! macro. This function fowards all calls to the
-/// generic Logger which either puts the data to the UART0 or somewhere else...
+/// generic console which puts the string to the assigned output channel.
 pub fn print(s: &str) {
     // pass the string to the actual configured console to be printed
     CONSOLE.take_for(|console| {
