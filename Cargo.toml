@@ -1,20 +1,21 @@
 [package]
 name = "ruspiro-console"
 authors = ["André Borrmann <pspwizard@gmx.de>"]
-version = "0.0.1" # remember to update html_root_url
-description = ""
+version = "0.0.2" # remember to update html_root_url
+description = "This crate provides a lightweight console abstraction to print strings to an output channel that could be easely configured/attached."
 license = "Apache-2.0"
-repository = "https://github.com/RusPiRo/ruspiro-console/tree/v0.0.1"
+repository = "https://github.com/RusPiRo/ruspiro-console/tree/v0.0.2"
+documentation = "https://docs.rs/ruspiro-console/0.0.2"
 readme = "README.md"
-keywords = ["ruspiro", "console", "raspberry-pi", "baremetal"]
-categories = ["no_std", "baremetal"]
+keywords = ["RusPiRo", "console", "raspberrypi", "baremetal"]
+categories = ["no-std", "embedded"]
 edition = "2018"
 
 [lib]
 
 [dependencies]
-ruspiro-singleton = { git = "https://github.com/RusPiRo/ruspiro-singleton", tag = "v0.0.1" }
-ruspiro-allocator = { git = "https://github.com/RusPiRo/ruspiro-allocator", tag = "v0.0.1", optional = true }
+ruspiro-singleton = "0.0.2"
+ruspiro-allocator = { version = "0.0.2", optional = true }
 
 [features]
 with_allocator = ["ruspiro-allocator"]

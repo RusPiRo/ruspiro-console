@@ -1,10 +1,20 @@
 # Simple Console abstraction RusPiRo crate
 
+This crate provides a console abstraction to enable string output to a configurable output channel.
+It also provides the convinient macros (``print!`` and ``println!``) to output text that are usually not 
+available in ``[no_std]`` environments. However this crate also provide macros to indicate the severity of the 
+message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
+
+## Dependencies
+As this crate uses macros to provide formatted strings it depends on the alloc crate. When using this crate
+therefore a heap memory allocator has to be provided to successfully build and link. This could be a custom baremetal
+allocator as provided with the corresponding crate ``ruspiro_allocator``.
+
 ## Usage
 To use the crate just add the following dependency to your ``Cargo.toml`` file:
 ```
 [dependencies]
-ruspiro-console = { git = "https://github.com/RusPiRo/ruspiro-console", tag = "v0.0.1" }
+ruspiro-console = "0.0.2"
 ```
 
 As the console crate refers to functions and structures of the ``core::alloc`` crate the final binary need to be linked
@@ -12,7 +22,7 @@ with a custom allocator. However, the ``ruspiro-console`` can bring the RusPiRo 
 feature ``with_allocator`` like so:
 ```
 [dependencies]
-ruspiro-console = { git = "https://github.com/RusPiRo/ruspiro-console", tag = "v0.0.1", features = ["with_allocator"] }
+ruspiro-console = { version = "0.0.2", features = ["with_allocator"] }
 ```
 
 Once the console crate is available the common macros used to output strings ``print!`` and ``println`` could be used.

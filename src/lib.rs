@@ -4,13 +4,13 @@
  * Author: André Borrmann 
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.0.1")]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.0.2")]
 #![no_std]
 
 //! # Console abstraction
 //! 
 //! This crate provides a console abstraction to enable string output to a configurable output channel.
-//! This crate also provides the convinient macros (``print!`` and ``println!``) to output text that are usually not 
+//! It also provides the convinient macros (``print!`` and ``println!``) to output text that are usually not 
 //! available in ``[no_std]`` environments. However this crate also provide macros to indicate the severity of the 
 //! message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
 //! 
@@ -20,18 +20,13 @@
 //! allocator as provided with the corresponding crate ``ruspiro_allocator``.
 //! 
 //! # Usage
-//! To use the crate just add the following dependency to your ``Cargo.toml`` file:
-//! ```
-//! [dependencies]
-//! ruspiro-console = { git = "https://github.com/RusPiRo/ruspiro-console", tag = "v0.0.1" }
-//! ```
 //! 
 //! As the console crate refers to functions and structures of the ``core::alloc`` crate the final binary need to be linked
 //! with a custom allocator. However, the ``ruspiro-console`` can bring the RusPiRo specific allocator if you activate the
 //! feature ``with_allocator`` like so:
 //! ```
 //! [dependencies]
-//! ruspiro-console = { git = "https://github.com/RusPiRo/ruspiro-console", tag = "v0.0.1", features = ["with_allocator"] }
+//! ruspiro-console = { version = "0.0.2", features = ["with_allocator"] }
 //! ```
 //! 
 //! To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
@@ -77,8 +72,11 @@ use alloc::boxed::Box;
 
 /// Every "real" console need to implement this trait. Also the explicit Drop trait need to be implemented
 /// as the drop method of the implementing console will be called as soon as the actual console does release
-/// ownership of this
+/// ownership of it
 pub trait ConsoleImpl: Drop {
+    /// pass a single character to the output channel
+    fn putc(&self, c: char);
+    /// pass a string to the output channel
     fn puts(&self, s: &str);
 }
 
@@ -127,6 +125,10 @@ impl Console {
 struct DefaultConsole;
 
 impl ConsoleImpl for DefaultConsole {
+    fn putc(&self, _: char) {
+        // the default console does nothing as it is not linked to any hardware
+    }
+
     fn puts(&self, _: &str) {
         // the default console does nothing as it is not linked to any hardware
     }
@@ -134,6 +136,6 @@ impl ConsoleImpl for DefaultConsole {
 
 impl Drop for DefaultConsole {
     fn drop(&mut self) {
-        // the default console has no recources that need to be freed while dropping
+        // the default console has no resources that need to be freed while dropping
     }
 }

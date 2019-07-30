@@ -7,17 +7,19 @@
 
 //! # Convinient output macros to print formatted strings to the configured channel of the console
 //! 
+//! Provide the print!() and println!() macro's as used in the libstd crate which is not available here
+//! as we do need formatting on the parameter and formatting requires memory allocation the
+//! use of this functions is only possible if a global allocator is implemented.<br>
+//! You may use the ``ruspiro-allocator`` crate.
 
-/// Provide the print!() and println!() macro's as used in the libstd crate which is not available here
-/// as we do need formatting on the parameter and formatting requires memory allocation the
-/// use of this functions is only possible if a global allocator is implemented.<br>
-/// See the [rubots-memory] crate for the a possible implementation.
+/// This macro works like the ``std::print!`` one.
 #[macro_export]
 macro_rules! print {
     //$crate::macros::alloc::
     ($($arg:tt)*) => ($crate::print($crate::alloc::format!($($arg)*).as_str()));
 }
 
+/// This macro works like the ``std::println!`` one
 #[macro_export]
 macro_rules! println {
     () => ($crate::print!("\r\n"));
@@ -26,6 +28,7 @@ macro_rules! println {
     })
 }
 
+/// This macro prefixes the output with "I: <module-path> -". Other than this it works like the ``std::println!``
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => ({
@@ -33,6 +36,7 @@ macro_rules! info {
     })
 }
 
+/// This macro prefixes the output with "W: <module-path> -". Other than this it works like the ``std::println!``
 #[macro_export]
 macro_rules! warn {
     ($($arg:tt)*) => ({
@@ -40,6 +44,7 @@ macro_rules! warn {
     })
 }
 
+/// This macro prefixes the output with "E: <module-path> -". Other than this it works like the ``std::println!``
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)*) => ({
