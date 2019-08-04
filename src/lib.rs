@@ -4,7 +4,7 @@
  * Author: André Borrmann 
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.0.2")]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.1.0")]
 #![no_std]
 
 //! # Console abstraction
@@ -26,7 +26,7 @@
 //! feature ``with_allocator`` like so:
 //! ```
 //! [dependencies]
-//! ruspiro-console = { version = "0.0.2", features = ["with_allocator"] }
+//! ruspiro-console = { version = "0.1.0", features = ["with_allocator"] }
 //! ```
 //! 
 //! To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This

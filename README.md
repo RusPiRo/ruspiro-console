@@ -5,6 +5,11 @@ It also provides the convinient macros (``print!`` and ``println!``) to output t
 available in ``[no_std]`` environments. However this crate also provide macros to indicate the severity of the 
 message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
 
+[![Travis-CI Status](https://api.travis-ci.org/RusPiRo/ruspiro-console.svg?branch=master)](https://travis-ci.org/RusPiRo/ruspiro-console)
+[![Latest Version](https://img.shields.io/crates/v/ruspiro-console.svg)](https://crates.io/crates/ruspiro-console)
+[![Documentation](https://docs.rs/ruspiro-console/badge.svg)](https://docs.rs/ruspiro-console)
+[![License](https://img.shields.io/crates/l/ruspiro-console.svg)](https://github.com/RusPiRo/ruspiro-console#license)
+
 ## Dependencies
 As this crate uses macros to provide formatted strings it depends on the alloc crate. When using this crate
 therefore a heap memory allocator has to be provided to successfully build and link. This could be a custom baremetal
@@ -14,7 +19,7 @@ allocator as provided with the corresponding crate ``ruspiro_allocator``.
 To use the crate just add the following dependency to your ``Cargo.toml`` file:
 ```
 [dependencies]
-ruspiro-console = "0.0.2"
+ruspiro-console = "0.1.0"
 ```
 
 As the console crate refers to functions and structures of the ``core::alloc`` crate the final binary need to be linked
@@ -22,7 +27,7 @@ with a custom allocator. However, the ``ruspiro-console`` can bring the RusPiRo 
 feature ``with_allocator`` like so:
 ```
 [dependencies]
-ruspiro-console = { version = "0.0.2", features = ["with_allocator"] }
+ruspiro-console = { version = "0.1.0", features = ["with_allocator"] }
 ```
 
 Once the console crate is available the common macros used to output strings ``print!`` and ``println`` could be used.
@@ -72,4 +77,4 @@ fn demo() {
 
 
 ## License
-This crate is licensed under MIT license ([LICENSE](LICENSE) or http://opensource.org/licenses/MIT)
+Licensed under Apache License, Version 2.0, ([LICENSE](LICENSE) or http://www.apache.org/licenses/LICENSE-2.0)
