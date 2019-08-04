@@ -7,7 +7,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "ruspiro-allocator"
-version = "0.0.2"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cc 1.0.38 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -15,27 +15,27 @@ dependencies = [
 
 [[package]]
 name = "ruspiro-console"
-version = "0.0.2"
+version = "0.1.0"
 dependencies = [
- "ruspiro-allocator 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "ruspiro-singleton 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ruspiro-allocator 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ruspiro-singleton 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "ruspiro-lock"
-version = "0.0.2"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "ruspiro-singleton"
-version = "0.0.2"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "ruspiro-lock 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ruspiro-lock 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [metadata]
 "checksum cc 1.0.38 (registry+https://github.com/rust-lang/crates.io-index)" = "ce400c638d48ee0e9ab75aef7997609ec57367ccfe1463f21bf53c3eca67bf46"
-"checksum ruspiro-allocator 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "51d6175f294fb586dbd94e496796fd6181f7944a3dc99da9b56c75cdae32f2ce"
-"checksum ruspiro-lock 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "747f64668f050f30cba05098c28bc29a732dbc6a85fa33c6a4f3f0bc8040ee5e"
-"checksum ruspiro-singleton 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "4334df6bb425fc777b98ad4b8072d992a600995dfb26c1f40f3cf51f463c7c03"
+"checksum ruspiro-allocator 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "c230d044ae57bcd10aaf6d3f1f27c44990b7900cd229463f1990a5c826f10e8a"
+"checksum ruspiro-lock 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "5655fe05fe4b90dc84698371cf0d7db487c6826933017ae199d908cb2a96e9bc"
+"checksum ruspiro-singleton 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "03fbde4c1f1bc3a4cc88ad0e8f33e20ff7397a87a11b9856edea412e4bef863d"

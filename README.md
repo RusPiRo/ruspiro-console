@@ -5,6 +5,11 @@ It also provides the convinient macros (``print!`` and ``println!``) to output t
 available in ``[no_std]`` environments. However this crate also provide macros to indicate the severity of the 
 message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
 
+[![Travis-CI Status](https://api.travis-ci.org/RusPiRo/ruspiro-console.svg?branch=master)](https://travis-ci.org/RusPiRo/ruspiro-console)
+[![Latest Version](https://img.shields.io/crates/v/ruspiro-console.svg)](https://crates.io/crates/ruspiro-console)
+[![Documentation](https://docs.rs/ruspiro-console/badge.svg)](https://docs.rs/ruspiro-console)
+[![License](https://img.shields.io/crates/l/ruspiro-console.svg)](https://github.com/RusPiRo/ruspiro-console#license)
+
 ## Dependencies
 As this crate uses macros to provide formatted strings it depends on the alloc crate. When using this crate
 therefore a heap memory allocator has to be provided to successfully build and link. This could be a custom baremetal
@@ -72,4 +77,4 @@ fn demo() {
 
 
 ## License
-This crate is licensed under MIT license ([LICENSE](LICENSE) or http://opensource.org/licenses/MIT)
+Licensed under Apache License, Version 2.0, ([LICENSE](LICENSE) or http://www.apache.org/licenses/LICENSE-2.0)
