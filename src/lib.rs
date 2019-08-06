@@ -4,7 +4,7 @@
  * Author: André Borrmann 
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.1.0")]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.1.1")]
 #![no_std]
 
 //! # Console abstraction
@@ -62,10 +62,27 @@
 //! }
 //! ```
 //! 
+//#![feature(linkage)]
+
 pub extern crate alloc;
 
 #[cfg(feature = "with_allocator")]
 extern crate ruspiro_allocator;
+
+/**
+ * when this crate shall use the ruspiro-allocator crate this should usually just
+ * provide the rust_oom function. However, this seem to be optimized away at some point
+ * therefore use this "hack" to define an extern existence of this function and do a
+ * dummy call to it to ensure the function will some sort of "re-exported" by this crate...
+ * hack, but works...
+ */
+#[cfg(feature = "with_allocator")]
+extern { fn rust_oom(); }
+
+#[cfg(feature = "with_allocator")]
+#[no_mangle]
+fn use_rust_oom() { unsafe { rust_oom(); } }
+
 
 #[macro_use]
 pub mod macros;

@@ -19,7 +19,7 @@ allocator as provided with the corresponding crate ``ruspiro_allocator``.
 To use the crate just add the following dependency to your ``Cargo.toml`` file:
 ```
 [dependencies]
-ruspiro-console = "0.1.0"
+ruspiro-console = "0.1.1"
 ```
 
 As the console crate refers to functions and structures of the ``core::alloc`` crate the final binary need to be linked
