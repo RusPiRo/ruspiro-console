@@ -27,7 +27,7 @@ with a custom allocator. However, the ``ruspiro-console`` can bring the RusPiRo 
 feature ``with_allocator`` like so:
 ```
 [dependencies]
-ruspiro-console = { version = "0.1.0", features = ["with_allocator"] }
+ruspiro-console = { version = "0.1.1", features = ["with_allocator"] }
 ```
 
 Once the console crate is available the common macros used to output strings ``print!`` and ``println`` could be used.
@@ -59,7 +59,7 @@ If this trait has been implemented this structure can be used as actual console.
 code written at the earliest possible point in the main crate of the binary (e.g. the kernel)
 ```
 use ruspiro_console::*;
-use ruspiro_uart::*; // as we demonstrate with the Uart.
+use ruspiro_uart::*; // as we demonstrate the usage with the Uart.
 
 fn demo() {
     let mut uart = Uart::new(); // create a new uart struct

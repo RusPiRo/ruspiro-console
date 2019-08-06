@@ -26,7 +26,7 @@
 //! feature ``with_allocator`` like so:
 //! ```
 //! [dependencies]
-//! ruspiro-console = { version = "0.1.0", features = ["with_allocator"] }
+//! ruspiro-console = { version = "0.1.1", features = ["with_allocator"] }
 //! ```
 //! 
 //! To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
