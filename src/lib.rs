@@ -4,7 +4,7 @@
  * Author: André Borrmann 
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.1.1")]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.2.0")]
 #![no_std]
 
 //! # Console abstraction
@@ -26,13 +26,13 @@
 //! feature ``with_allocator`` like so:
 //! ```
 //! [dependencies]
-//! ruspiro-console = { version = "0.1.1", features = ["with_allocator"] }
+//! ruspiro-console = { version = "0.2", features = ["with_allocator"] }
 //! ```
 //! 
 //! To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
 //! for excample is done in the Uart like so:
 //! ```
-//! impl ConsoleImpl for Uart0 {
+//! impl ConsoleImpl for Uart1 {
 //!     fn putc(&self, c: char) {
 //!         self.send_char(c);
 //!     }
@@ -50,7 +50,7 @@
 //! use ruspiro_uart::*; // as we demonstrate with the Uart.
 //! 
 //! fn demo() {
-//!     let mut uart = Uart::new(); // create a new uart struct
+//!     let mut uart = Uart1::new(); // create a new uart struct
 //!     if uart.initialize(250_000_000, 115_200).is_ok() { // initialize the Uart with fixed core rate and baud rate
 //!         CONSOLE.take_for(|cons| cons.replace(uart)); // from this point CONSOLE takes ownership of Uart
 //!         // uncommenting the following line will give compiler error as uart is moved
@@ -113,7 +113,7 @@ pub static CONSOLE: Singleton<Console> = Singleton::<Console>::new(
 /// generic console which puts the string to the assigned output channel.
 pub fn print(s: &str) {
     // pass the string to the actual configured console to be printed
-    CONSOLE.take_for(|console| {
+    CONSOLE.take_for(|console| {        
         console.get_current().puts(s);
     });
 }

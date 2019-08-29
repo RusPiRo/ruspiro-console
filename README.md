@@ -19,7 +19,7 @@ allocator as provided with the corresponding crate ``ruspiro_allocator``.
 To use the crate just add the following dependency to your ``Cargo.toml`` file:
 ```
 [dependencies]
-ruspiro-console = "0.1.1"
+ruspiro-console = "0.2"
 ```
 
 As the console crate refers to functions and structures of the ``core::alloc`` crate the final binary need to be linked
@@ -27,7 +27,7 @@ with a custom allocator. However, the ``ruspiro-console`` can bring the RusPiRo 
 feature ``with_allocator`` like so:
 ```
 [dependencies]
-ruspiro-console = { version = "0.1.1", features = ["with_allocator"] }
+ruspiro-console = { version = "0.2", features = ["with_allocator"] }
 ```
 
 Once the console crate is available the common macros used to output strings ``print!`` and ``println`` could be used.
@@ -44,7 +44,7 @@ fn demo() {
 To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
 for example is done in the Uart like so:
 ```
-impl ConsoleImpl for Uart0 {
+impl ConsoleImpl for Uart1 {
     fn putc(&self, c: char) {
         self.send_char(c);
     }
@@ -62,7 +62,7 @@ use ruspiro_console::*;
 use ruspiro_uart::*; // as we demonstrate the usage with the Uart.
 
 fn demo() {
-    let mut uart = Uart::new(); // create a new uart struct
+    let mut uart = Uart1::new(); // create a new uart struct
     if uart.initialize(250_000_000, 115_200).is_ok() { // initialize the Uart with fixed core rate and baud rate
         CONSOLE.take_for(|cons| cons.replace(uart)); // from this point CONSOLE takes ownership of Uart
         // uncommenting the following line will give compiler error as uart is moved
