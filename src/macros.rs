@@ -28,7 +28,7 @@ macro_rules! println {
     })
 }
 
-/// This macro prefixes the output with "I: <module-path> -". Other than this it works like the ``std::println!``
+/// This macro prefixes the output with "I: &lt;module-path&gt; -". Other than this it works like the ``std::println!``
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => ({
@@ -36,7 +36,7 @@ macro_rules! info {
     })
 }
 
-/// This macro prefixes the output with "W: <module-path> -". Other than this it works like the ``std::println!``
+/// This macro prefixes the output with "W: &lt;module-path&gt; -". Other than this it works like the ``std::println!``
 #[macro_export]
 macro_rules! warn {
     ($($arg:tt)*) => ({
@@ -44,7 +44,7 @@ macro_rules! warn {
     })
 }
 
-/// This macro prefixes the output with "E: <module-path> -". Other than this it works like the ``std::println!``
+/// This macro prefixes the output with "E: &lt;module-path&gt; -". Other than this it works like the ``std::println!``
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)*) => ({
