@@ -2,7 +2,9 @@
 name = "ruspiro-console"
 authors = ["André Borrmann <pspwizard@gmx.de>"]
 version = "0.2.1" # remember to update html_root_url
-description = "Lightweight console abstraction to print strings to an output channel that could be easely configured/attached."
+description = """
+Lightweight console abstraction to print strings to an output channel that could be easely configured/attached.
+"""
 license = "Apache-2.0"
 repository = "https://github.com/RusPiRo/ruspiro-console/"
 documentation = "https://docs.rs/ruspiro-console/0.2.1"
@@ -10,6 +12,10 @@ readme = "README.md"
 keywords = ["RusPiRo", "console", "raspberrypi", "baremetal"]
 categories = ["no-std", "embedded"]
 edition = "2018"
+
+[badges]
+travis-ci = { repository = "RusPiRo/ruspiro-console", branch = "master" }
+maintenance = { status = "actively-developed" }
 
 [lib]
 
