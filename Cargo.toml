@@ -16,7 +16,7 @@ edition = "2018"
 [dependencies]
 ruspiro-singleton = "0.2"
 ruspiro-allocator = { version = "0.2", optional = true }
-ruspiro-timer = { path = "../timer", version = "0.1" }
+ruspiro-timer = "0.1"
 
 [features]
 with_allocator = ["ruspiro-allocator"]
