@@ -4,7 +4,7 @@
  * Author: André Borrmann 
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.2.0")]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.2.1")]
 #![no_std]
 
 //! # Console abstraction
@@ -61,8 +61,11 @@
 //!     println!("Console is ready and display's through uart");
 //! }
 //! ```
+//! # Features
 //! 
-//#![feature(linkage)]
+//! - ``with_allocator`` this will bring the ``ruspiro-allocator`` which is usefull if you don't want to provide your own
+//! when using this crate.
+
 
 pub extern crate alloc;
 
@@ -90,6 +93,7 @@ pub use macros::*;
 
 use ruspiro_singleton::Singleton;
 use alloc::boxed::Box;
+use ruspiro_timer as timer;
 
 /// Every "real" console need to implement this trait. Also the explicit Drop trait need to be implemented
 /// as the drop method of the implementing console will be called as soon as the actual console does release
@@ -114,8 +118,9 @@ pub static CONSOLE: Singleton<Console> = Singleton::<Console>::new(
 pub fn print(s: &str) {
     // pass the string to the actual configured console to be printed
     CONSOLE.take_for(|console| {        
-        console.get_current().puts(s);
+        console.get_current().puts(s);        
     });
+    timer::sleep(1000000);
 }
 
 /// The representation of the abstract console
@@ -123,6 +128,9 @@ pub struct Console {
     current: Option<Box<dyn ConsoleImpl>>,
     default: DefaultConsole,
 }
+
+//unsafe impl Sync for Console { }
+//unsafe impl Send for Console { }
 
 impl Console {
     /// Retrieve the current active console to be used for passing strings to to get printend somewhere 
