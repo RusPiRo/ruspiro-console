@@ -15,9 +15,9 @@
 //! message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
 //!
 //! # Dependencies
-//! As this crate uses macros to provide formatted strings it depends on the alloc crate. Therefore
-//! a heap memory allocator has to be provided to successfully build and link. This could be a custom baremetal
-//! allocator as provided with the corresponding crate ``ruspiro_allocator`` or any other.
+//! This crate uses macros to provide formatted strings. This formatting requires a memory allocator to
+//! be present (as part of the ``alloc`` crate). So when using this crate provide an allocator such as
+//! ``ruspiro_allocator``.
 //!
 //! # Example
 //! To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
@@ -111,7 +111,7 @@ impl Console {
     }
 }
 
-// The default console is a kind of fall back that prints nothing...
+/// The default console is a kind of fall back that prints nothing...
 struct DefaultConsole;
 
 impl ConsoleImpl for DefaultConsole {

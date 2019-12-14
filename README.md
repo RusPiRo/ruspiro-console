@@ -11,23 +11,15 @@ message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
 [![License](https://img.shields.io/crates/l/ruspiro-console.svg)](https://github.com/RusPiRo/ruspiro-console#license)
 
 ## Dependencies
-As this crate uses macros to provide formatted strings it depends on the alloc crate. When using this crate
-therefore a heap memory allocator has to be provided to successfully build and link. This could be a custom baremetal
-allocator as provided with the corresponding crate ``ruspiro_allocator``.
+This crate uses macros to provide formatted strings. This formatting requires a memory allocator to
+be present (as part of the ``alloc`` crate). So when using this crate provide an allocator such as 
+``ruspiro_allocator``.
 
 ## Usage
 To use the crate just add the following dependency to your ``Cargo.toml`` file:
 ```
 [dependencies]
 ruspiro-console = "0.3"
-```
-
-As the console crate refers to functions and structures of the ``core::alloc`` crate the final binary need to be linked
-with a custom allocator. However, the ``ruspiro-console`` can bring the RusPiRo specific allocator if you activate the
-feature ``with_allocator`` like so:
-```
-[dependencies]
-ruspiro-console = { version = "0.3", features = ["with_allocator"] }
 ```
 
 Once the console crate is available the common macros used to output strings ``print!`` and ``println`` could be used.
