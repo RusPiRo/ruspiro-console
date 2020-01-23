@@ -82,7 +82,7 @@ pub static CONSOLE: Singleton<Console> = Singleton::<Console>::new(Console {
 /// generic console which puts the string to the assigned output channel.
 pub fn print(s: &str) {
     // pass the string to the actual configured console to be printed
-    CONSOLE.take_for(|console| {
+    CONSOLE.use_for(|console| {
         console.get_current().puts(s);
     });
 }
