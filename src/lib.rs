@@ -4,8 +4,8 @@
  * Author: André Borrmann
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.3.0")]
-#![no_std]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.3.1")]
+#![cfg_attr(not(any(test, doctest)), no_std)]
 
 //! # Console abstraction
 //!
@@ -22,7 +22,7 @@
 //! # Example
 //! To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
 //! for example is done in the Uart like so:
-//! ```
+//! ```ignore
 //! impl ConsoleImpl for Uart1 {
 //!     fn putc(&self, c: char) {
 //!         self.send_char(c);
@@ -36,7 +36,7 @@
 //!
 //! If this trait has been implemented this structure can be used as actual console. To use it there should be the following
 //! code written at the earliest possible point in the main crate of the binary (e.g. the kernel)
-//! ```
+//! ```ignore
 //! use ruspiro_console::*;
 //! use ruspiro_uart::*; // as we demonstrate with the Uart.
 //!
@@ -82,7 +82,7 @@ pub static CONSOLE: Singleton<Console> = Singleton::<Console>::new(Console {
 /// generic console which puts the string to the assigned output channel.
 pub fn print(s: &str) {
     // pass the string to the actual configured console to be printed
-    CONSOLE.take_for(|console| {
+    CONSOLE.use_for(|console| {
         console.get_current().puts(s);
     });
 }
