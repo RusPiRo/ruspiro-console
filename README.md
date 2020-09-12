@@ -11,20 +11,24 @@ message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
 [![License](https://img.shields.io/crates/l/ruspiro-console.svg)](https://github.com/RusPiRo/ruspiro-console#license)
 
 ## Dependencies
+
 This crate uses macros to provide formatted strings. This formatting requires a memory allocator to
 be present (as part of the ``alloc`` crate). So when using this crate provide an allocator such as 
 ``ruspiro_allocator``.
 
 ## Usage
+
 To use the crate just add the following dependency to your ``Cargo.toml`` file:
-```
+
+```toml
 [dependencies]
 ruspiro-console = "0.3"
 ```
 
 Once the console crate is available the common macros used to output strings ``print!`` and ``println`` could be used.
 However, without actually setting a console output those statements will not write any data anywhere:
-```
+
+```rust
 use ruspiro_console::*;
 
 fn demo() {
@@ -35,7 +39,8 @@ fn demo() {
 
 To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
 for example is done in the Uart like so:
-```
+
+```rust
 impl ConsoleImpl for Uart1 {
     fn putc(&self, c: char) {
         self.send_char(c);
@@ -49,7 +54,8 @@ impl ConsoleImpl for Uart1 {
 
 If this trait has been implemented this structure can be used as actual console. To use it there should be the following
 code written at the earliest possible point in the main crate of the binary (e.g. the kernel)
-```
+
+```rust
 use ruspiro_console::*;
 use ruspiro_uart::*; // as we demonstrate the usage with the Uart.
 
@@ -67,4 +73,5 @@ fn demo() {
 ```
 
 ## License
-Licensed under Apache License, Version 2.0, ([LICENSE](LICENSE) or http://www.apache.org/licenses/LICENSE-2.0)
+
+Licensed under Apache License, Version 2.0, ([LICENSE](LICENSE) or [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0))

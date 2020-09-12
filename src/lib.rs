@@ -4,7 +4,7 @@
  * Author: André Borrmann
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.3.1")]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.3.2")]
 #![cfg_attr(not(any(test, doctest)), no_std)]
 
 //! # Console abstraction
