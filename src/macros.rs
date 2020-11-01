@@ -16,7 +16,7 @@
 #[macro_export]
 macro_rules! print {
     //$crate::macros::alloc::
-    ($($arg:tt)*) => ($crate::print($crate::alloc::format!($($arg)*).as_str()));
+    ($($arg:tt)*) => ($crate::_print($crate::alloc::format!($($arg)*)));
 }
 
 /// This macro works like the ``std::println!`` one

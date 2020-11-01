@@ -4,7 +4,7 @@
  * Author: André Borrmann
  * License: Appache License 2.0
  **********************************************************************************************************************/
-#![doc(html_root_url = "https://docs.rs/ruspiro-console/0.3.2")]
+#![doc(html_root_url = "https://docs.rs/ruspiro-console/||VERSION||")]
 #![cfg_attr(not(any(test, doctest)), no_std)]
 
 //! # Console abstraction
@@ -20,22 +20,12 @@
 //! ``ruspiro_allocator``.
 //!
 //! # Example
-//! To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
-//! for example is done in the Uart like so:
-//! ```ignore
-//! impl ConsoleImpl for Uart1 {
-//!     fn putc(&self, c: char) {
-//!         self.send_char(c);
-//!     }
+//! To actually set an active output channel you need to provide a structure that implements the ``core::fmt::Write`` 
+//! trait.
 //!
-//!     fn puts(&self, s: &str) {
-//!         self.send_string(s);
-//!     }
-//! }
-//! ```
+//! If this trait has been implemented this structure can be used as actual console. To use it there should be the 
+//! following code written at the earliest possible point in the main crate of the binary (e.g. the kernel)
 //!
-//! If this trait has been implemented this structure can be used as actual console. To use it there should be the following
-//! code written at the earliest possible point in the main crate of the binary (e.g. the kernel)
 //! ```ignore
 //! use ruspiro_console::*;
 //! use ruspiro_uart::*; // as we demonstrate with the Uart.
@@ -61,52 +51,38 @@ pub use macros::*;
 
 use alloc::boxed::Box;
 use ruspiro_singleton::Singleton;
-
-/// Every "real" console need to implement this trait. Also the explicit Drop trait need to be implemented
-/// as the drop method of the implementing console will be called as soon as the actual console does release
-/// ownership of it
-pub trait ConsoleImpl: Drop {
-    /// pass a single character to the output channel
-    fn putc(&self, c: char);
-    /// pass a string to the output channel
-    fn puts(&self, s: &str);
-}
+use core::fmt;
 
 /// The Console singleton used by print! and println! macros
-pub static CONSOLE: Singleton<Console> = Singleton::<Console>::new(Console {
+pub static CONSOLE: Singleton<Console> = Singleton::new(Console {
     current: None,
     default: DefaultConsole {},
 });
 
+#[doc(hidden)]
 /// The base printing function hidden behind the print! and println! macro. This function fowards all calls to the
 /// generic console which puts the string to the assigned output channel.
-pub fn print(s: &str) {
+pub fn _print(args: fmt::Arguments) {
     // pass the string to the actual configured console to be printed
-    CONSOLE.use_for(|console| {
-        console.get_current().puts(s);
+    CONSOLE.take_for(|console| {
+        if let Some(ref mut writer) = console.current {
+            writer.write_fmt(args).expect("writing should never fail");
+        }
     });
 }
 
 /// The representation of the abstract console
+#[allow(dead_code)]
 pub struct Console {
-    current: Option<Box<dyn ConsoleImpl>>,
+    current: Option<Box<dyn fmt::Write>>,
     default: DefaultConsole,
 }
 
 impl Console {
-    /// Retrieve the current active console to be used for passing strings to to get printend somewhere
-    pub fn get_current(&self) -> &dyn ConsoleImpl {
-        if let Some(ref console) = self.current {
-            console.as_ref()
-        } else {
-            &self.default
-        }
-    }
-
     /// Replacing the current active console. Once the new has been set the [drop] function of the previous one is
     /// called. The Console takes ownership of the active once. Access to the active console outside the abstraction
     /// is not possible and should not be.
-    pub fn replace<T: ConsoleImpl + 'static>(&mut self, console: T) {
+    pub fn replace<T: fmt::Write + 'static>(&mut self, console: T) {
         self.current.replace(Box::from(console));
     }
 }
@@ -114,18 +90,8 @@ impl Console {
 /// The default console is a kind of fall back that prints nothing...
 struct DefaultConsole;
 
-impl ConsoleImpl for DefaultConsole {
-    fn putc(&self, _: char) {
-        // the default console does nothing as it is not linked to any hardware
-    }
-
-    fn puts(&self, _: &str) {
-        // the default console does nothing as it is not linked to any hardware
-    }
-}
-
-impl Drop for DefaultConsole {
-    fn drop(&mut self) {
-        // the default console has no resources that need to be freed while dropping
+impl fmt::Write for DefaultConsole {
+    fn write_str(&mut self, _s: &str) -> fmt::Result {
+        Ok(())
     }
 }
