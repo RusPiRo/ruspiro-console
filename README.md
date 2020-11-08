@@ -32,17 +32,15 @@ fn demo() {
 }
 ```
 
-To actually set an active output channel you need to provide a structure that implements the ``ConsoleImpl`` trait. This
+To actually set an active output channel you need to provide a structure that implements the ``core::fmt::Write`` trait. This
 for example is done in the Uart like so:
 
 ```rust
-impl ConsoleImpl for Uart1 {
-    fn putc(&self, c: char) {
-        self.send_char(c);
-    }
-
-    fn puts(&self, s: &str) {
+impl core::fmt::Write for Uart1 {
+    fn write_str(&mut self, s: &str) -> core::fmt::Result {
         self.send_string(s);
+
+        Ok(())
     }
 }
 ```
@@ -66,6 +64,9 @@ fn demo() {
     println!("Console is ready and display's through uart");
 }
 ```
+
+> ! HINT!
+> As the `Write` trait requires the structure to be mutable when writing to the output channel the console operations are blocking operations -> thus requiring atomic operations to be possible -> thus requiring the *MMU* to be activated before using the console abstraction is possible. Otherwise execution will *hang* as atomics are not able to be processed by the CPU.
 
 ## License
 

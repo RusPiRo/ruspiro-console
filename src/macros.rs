@@ -2,7 +2,7 @@
  * Copyright (c) 2019 by the authors
  *
  * Author: André Borrmann
- * License: Appache License 2.0
+ * License: MIT / Appache License 2.0
  **********************************************************************************************************************/
 
 //! # Convinient output macros to print formatted strings to the configured channel of the console
