@@ -1,13 +1,13 @@
 [package]
 name = "ruspiro-console"
 authors = ["André Borrmann <pspwizard@gmx.de>"]
-version = "0.3.2" # remember to update html_root_url
+version = "0.4.0" # remember to update html_root_url
 description = """
-Lightweight console abstraction to print strings to an output channel that could be easely configured/attached.
+Lightweight console abstraction for bare metal implementations to print strings to an output channel that could be easely configured/attached.
 """
 license = "Apache-2.0"
-repository = "https://github.com/RusPiRo/ruspiro-console/tree/v0.3.2"
-documentation = "https://docs.rs/ruspiro-console/0.3.2"
+repository = "https://github.com/RusPiRo/ruspiro-console/tree/v||VERSION||"
+documentation = "https://docs.rs/ruspiro-console/||VERSION||"
 readme = "README.md"
 keywords = ["RusPiRo", "console", "raspberrypi", "baremetal"]
 categories = ["no-std", "embedded"]
@@ -20,9 +20,10 @@ maintenance = { status = "actively-developed" }
 [lib]
 
 [dependencies]
-ruspiro-singleton = "0.3"
+ruspiro-singleton = "0.4.0"
 
 [features]
+ruspiro_pi3 = []
 
 [patch.crates-io]
 ruspiro-singleton = { git = "https://github.com/RusPiRo/ruspiro-singleton.git" }
