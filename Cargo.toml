@@ -20,7 +20,7 @@ maintenance = { status = "actively-developed" }
 [lib]
 
 [dependencies]
-ruspiro-singleton = "0.3"
+ruspiro-singleton = "0.4.0"
 
 [features]
 ruspiro_pi3 = []

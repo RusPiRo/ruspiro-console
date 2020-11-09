@@ -55,7 +55,7 @@ use ruspiro_uart::*; // as we demonstrate the usage with the Uart.
 fn demo() {
     let mut uart = Uart1::new(); // create a new uart struct
     if uart.initialize(250_000_000, 115_200).is_ok() { // initialize the Uart with fixed core rate and baud rate
-        CONSOLE.take_for(|cons| cons.replace(uart)); // from this point CONSOLE takes ownership of Uart
+        CONSOLE.with_mut(|cons| cons.replace(uart)); // from this point CONSOLE takes ownership of Uart
         // uncommenting the following line will give compiler error as uart is moved
         // uart.send_string("I'm assigned to a console");
     }

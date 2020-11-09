@@ -33,7 +33,7 @@
 //! fn main() {
 //!     let mut uart = Uart1::new(); // create a new uart struct
 //!     if uart.initialize(250_000_000, 115_200).is_ok() { // initialize the Uart with fixed core rate and baud rate
-//!         CONSOLE.take_for(|cons| cons.replace(uart)); // from this point CONSOLE takes ownership of uart
+//!         CONSOLE.with_mut(|cons| cons.replace(uart)); // from this point CONSOLE takes ownership of uart
 //!     }
 //!
 //!     // if everything went fine uart should be assigned to the console for generic output
@@ -62,7 +62,7 @@ pub static CONSOLE: Singleton<Console> = Singleton::new(Console {
 /// generic console which writes the string to the assigned output channel.
 pub fn _print(args: fmt::Arguments) {
     // pass the string to the actual configured console to be printed
-    CONSOLE.take_for(|console| {
+    CONSOLE.with_mut(|console| {
         if let Some(ref mut writer) = console.current {
             writer.write_fmt(args).expect("writing to console should never fail");
         }
