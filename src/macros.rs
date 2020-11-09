@@ -2,7 +2,7 @@
  * Copyright (c) 2019 by the authors
  *
  * Author: André Borrmann
- * License: Appache License 2.0
+ * License: MIT / Appache License 2.0
  **********************************************************************************************************************/
 
 //! # Convinient output macros to print formatted strings to the configured channel of the console
@@ -16,7 +16,7 @@
 #[macro_export]
 macro_rules! print {
     //$crate::macros::alloc::
-    ($($arg:tt)*) => ($crate::print($crate::alloc::format!($($arg)*).as_str()));
+    ($($arg:tt)*) => ($crate::_print(format_args!($($arg)*)));
 }
 
 /// This macro works like the ``std::println!`` one
@@ -24,7 +24,7 @@ macro_rules! print {
 macro_rules! println {
     () => ($crate::print!("\r\n"));
     ($($arg:tt)*) => ({
-        $crate::print!("{}\r\n", $crate::alloc::format!($($arg)*));
+        $crate::print!("{}\r\n", format_args!($($arg)*));
     })
 }
 
@@ -32,7 +32,7 @@ macro_rules! println {
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => ({
-        $crate::print!("I: {} - {}\r\n", module_path!(), $crate::alloc::format!($($arg)*));
+        $crate::print!("I: {} - {}\r\n", module_path!(), format_args!($($arg)*));
     })
 }
 
@@ -40,7 +40,7 @@ macro_rules! info {
 #[macro_export]
 macro_rules! warn {
     ($($arg:tt)*) => ({
-        $crate::print!("W: {} - {}\r\n", module_path!(), $crate::alloc::format!($($arg)*));
+        $crate::print!("W: {} - {}\r\n", module_path!(), format_args!($($arg)*));
     })
 }
 
@@ -48,6 +48,6 @@ macro_rules! warn {
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)*) => ({
-        $crate::print!("E: {} - {}\r\n", module_path!(), $crate::alloc::format!($($arg)*));
+        $crate::print!("E: {} - {}\r\n", module_path!(), format_args!($($arg)*));
     })
 }
