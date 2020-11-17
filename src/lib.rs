@@ -20,10 +20,10 @@
 //! ``ruspiro_allocator``.
 //!
 //! # Example
-//! To actually set an active output channel you need to provide a structure that implements the ``core::fmt::Write`` 
+//! To actually set an active output channel you need to provide a structure that implements the ``core::fmt::Write``
 //! trait.
 //!
-//! If this trait has been implemented this structure can be used as actual console. To use it there should be the 
+//! If this trait has been implemented this structure can be used as actual console. To use it there should be the
 //! following code written at the earliest possible point in the main crate of the binary (e.g. the kernel)
 //!
 //! ```ignore
@@ -48,8 +48,8 @@ pub mod macros;
 pub use macros::*;
 
 use alloc::boxed::Box;
-use ruspiro_singleton::Singleton;
 use core::fmt;
+use ruspiro_singleton::Singleton;
 
 /// The Console singleton used by print! and println! macros
 pub static CONSOLE: Singleton<Console> = Singleton::new(Console {
@@ -64,7 +64,9 @@ pub fn _print(args: fmt::Arguments) {
     // pass the string to the actual configured console to be printed
     CONSOLE.with_mut(|console| {
         if let Some(ref mut writer) = console.current {
-            writer.write_fmt(args).expect("writing to console should never fail");
+            writer
+                .write_fmt(args)
+                .expect("writing to console should never fail");
         }
     });
 }
@@ -72,7 +74,7 @@ pub fn _print(args: fmt::Arguments) {
 /// The representation of the abstract console
 #[allow(dead_code)]
 pub struct Console {
-    current: Option<Box<dyn fmt::Write>>,
+    current: Option<Box<dyn fmt::Write + Send + Sync>>,
     default: DefaultConsole,
 }
 
@@ -80,7 +82,11 @@ impl Console {
     /// Replacing the current active console. Once the new has been set the [drop] function of the previous one is
     /// called. The Console takes ownership of the active once. Access to the active console outside the abstraction
     /// is not possible and should not be.
-    pub fn replace<T: fmt::Write + 'static>(&mut self, console: T) {
+    pub fn replace<T>(&mut self, console: T)
+    where
+        T: fmt::Write + Send + Sync,
+        T: 'static,
+    {
         self.current.replace(Box::from(console));
     }
 }
