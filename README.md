@@ -65,7 +65,7 @@ fn demo() {
 }
 ```
 
-> ! HINT!
+> !HINT!
 > As the `Write` trait requires the structure to be mutable when writing to the output channel the console operations are blocking operations -> thus requiring atomic operations to be possible -> thus requiring the *MMU* to be activated before using the console abstraction is possible. Otherwise execution will *hang* as atomics are not able to be processed by the CPU.
 
 ## License

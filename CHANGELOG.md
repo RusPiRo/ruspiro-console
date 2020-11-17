@@ -1,5 +1,11 @@
 # Changelog
 
+## :peach: v0.4.1
+
+- ### :detective: Fixes
+
+  - require the actual structure to be used as `Console` to implement `Send` and `Sync` as this is a requirement of the `Singleton` now.
+  
 ## :peach: v0.4.0
 
 - ### :wrench: Maintenance
