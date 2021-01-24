@@ -1,7 +1,14 @@
 # Changelog
 
-## :peach: v0.4.1
+## :cat: v0.5.0
 
+Enable the usage of the `log` crate to be used as generic logger facade in other crates to use the static logger/console in this crate.
+
+  - ### :bulb: Features
+  
+    - use the `log` crate to provide a generic logger facade.
+
+## :peach: v0.4.1
 - ### :detective: Fixes
 
   - require the actual structure to be used as `Console` to implement `Send` and `Sync` as this is a requirement of the `Singleton` now.

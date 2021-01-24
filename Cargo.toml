@@ -1,7 +1,7 @@
 [package]
 name = "ruspiro-console"
 authors = ["André Borrmann <pspwizard@gmx.de>"]
-version = "0.4.1" # remember to update html_root_url
+version = "0.5.0" # remember to update html_root_url
 description = """
 Lightweight console abstraction for bare metal implementations to print strings to an output channel that could be easely configured/attached.
 """
@@ -20,6 +20,7 @@ maintenance = { status = "actively-developed" }
 [lib]
 
 [dependencies]
+log = { version = "0.4", default-features = false }
 ruspiro-singleton = "0.4.1"
 
 [features]

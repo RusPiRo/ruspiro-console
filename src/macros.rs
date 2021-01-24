@@ -27,27 +27,3 @@ macro_rules! println {
         $crate::print!("{}\r\n", format_args!($($arg)*));
     })
 }
-
-/// This macro prefixes the output with "I: &lt;module-path&gt; -". Other than this it works like the ``std::println!``
-#[macro_export]
-macro_rules! info {
-    ($($arg:tt)*) => ({
-        $crate::print!("I: {} - {}\r\n", module_path!(), format_args!($($arg)*));
-    })
-}
-
-/// This macro prefixes the output with "W: &lt;module-path&gt; -". Other than this it works like the ``std::println!``
-#[macro_export]
-macro_rules! warn {
-    ($($arg:tt)*) => ({
-        $crate::print!("W: {} - {}\r\n", module_path!(), format_args!($($arg)*));
-    })
-}
-
-/// This macro prefixes the output with "E: &lt;module-path&gt; -". Other than this it works like the ``std::println!``
-#[macro_export]
-macro_rules! error {
-    ($($arg:tt)*) => ({
-        $crate::print!("E: {} - {}\r\n", module_path!(), format_args!($($arg)*));
-    })
-}

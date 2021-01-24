@@ -65,6 +65,23 @@ fn demo() {
 }
 ```
 
+You can also use the console crate to initialize logging to the Uart when using the `info!`, `warn!` or `error!` macros from the [log](https://crates.io/crates/log).
+
+```rust
+use ruspiro_console::*;
+use ruspiro_uart::*; // as we demonstrate the usage with the Uart.
+
+fn demo() {
+    let mut uart = Uart1::new(); // create a new uart struct
+    if uart.initialize(250_000_000, 115_200).is_ok() { // initialize the Uart with fixed core rate and baud rate
+        init_logger(LevelFilter::Error, uart); // from this point the logger takes ownership of uart
+    }
+
+    // if everything went fine uart should be assigned to the console for generic output
+    println!("Console is ready and display's through uart");
+}
+```
+
 > !HINT!
 > As the `Write` trait requires the structure to be mutable when writing to the output channel the console operations are blocking operations -> thus requiring atomic operations to be possible -> thus requiring the *MMU* to be activated before using the console abstraction is possible. Otherwise execution will *hang* as atomics are not able to be processed by the CPU.
 
