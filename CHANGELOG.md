@@ -1,5 +1,13 @@
 # Changelog
 
+## :cat: v0.5.2
+
+Migrate the actual travis-ci build pipeline to github actions
+
+- ### :detective: Fixes
+
+  - fix the version replacements in the github action.
+
 ## :cat: v0.5.1
 
 Migrate the actual travis-ci build pipeline to github actions
