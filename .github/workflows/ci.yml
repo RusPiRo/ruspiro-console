@@ -69,7 +69,7 @@ jobs:
   prepare_release:
     needs: [build, publish_dry]
     if: ${{ github.ref == 'refs/heads/development' }}
-    name: Create Release
+    name: Prepare Release - Create Release PR
     runs-on: ubuntu-latest
     steps:
       - name: Create PR against the release branch
@@ -92,18 +92,18 @@ jobs:
 
       - name: Prepre Crate Release Version
         run: |
-# extract current crate version from Cargo.toml
+          # extract current crate version from Cargo.toml
           export CRATE_VERSION=v`sed -En 's/^version.*=.*\"(.*)\".*$/\1/p' < Cargo.toml`
-# retrieve last release version from github
+          # retrieve last release version from github
           export LAST_VERSION="$(curl --silent "https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')"
           export LAST_VERSION=${LAST_VERSION:-v0.0.0}
           echo $CRATE_VERSION
           echo $LAST_VERSION
           git config --local user.name "2ndTaleStudio"
           git config --local user.email "43264484+2ndTaleStudio@users.noreply.github.com"
-# create the TAG required for the release
+          # create the TAG required for the release
           git tag $CRATE_VERSION -m "$CRATE_VERSION"
-# extract the release notes of the current release from the changelog
+          # extract the release notes of the current release from the changelog
           sed -En '/##.*:.*:.*'"$LAST_VERSION"'/q;p' CHANGELOG.md > RELEASENOTES.md
           sed -i -e 's/^# Changelog/# Release Notes/g' RELEASENOTES.md
 
