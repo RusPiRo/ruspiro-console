@@ -1,5 +1,13 @@
 # Changelog
 
+## :cat: v0.5.3
+
+Migrate the actual travis-ci build pipeline to github actions
+
+- ### :detective: Fixes
+
+  - fix the release description generation.
+
 ## :cat: v0.5.2
 
 Migrate the actual travis-ci build pipeline to github actions
