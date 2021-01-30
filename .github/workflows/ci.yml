@@ -97,6 +97,8 @@ jobs:
           # retrieve last release version from github
           echo 'LAST_VERSION='$(curl --silent "https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') >> $GITHUB_ENV
           echo 'LAST_VERSION='${LAST_VERSION:-v0.0.0} >> $GITHUB_ENV
+      - name: Create Tag
+        run: |
           echo ${{ env.CRATE_VERSION }}
           echo ${{ env.LAST_VERSION }}
           git config --local user.name "2ndTaleStudio"
