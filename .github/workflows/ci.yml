@@ -145,6 +145,18 @@ jobs:
         uses: davidB/rust-cargo-make@v1
         with:
           version: 'latest'
+
+      - name: Get current version
+        run: echo 'CRATE_VERSION=v'$(sed -En 's/^version.*=.*\"(.*)\".*$/\1/p' < Cargo.toml) >> $GITHUB_ENV
+      
+      - name: Update version place holder in files
+        run: |
+          # before actually publishing replace the final version for doc and repository in the Crago.toml
+          sed -i -e 's/||VERSION||/'$CRATE_VERSION'/g' Cargo.toml
+          # also update the version in the lib.rs doc root url
+          sed -i -e 's/||VERSION||/'$CRATE_VERSION'/g' src/lib.rs
+          # and the README.md
+          sed -i -e 's/||VERSION||/'$CRATE_VERSION'/g' README.md
         
       - name: Publish-Dry-Run
         run: cargo make publish --env CRATES_TOKEN=${{ secrets.CRATES_TOKEN }}
