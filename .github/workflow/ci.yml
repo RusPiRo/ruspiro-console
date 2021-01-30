@@ -67,6 +67,7 @@ jobs:
         run: cargo make publish_dry
 
   prepare_release:
+    needs: [build, publish_dry]
     if: ${{ github.ref == 'refs/heads/development' }}
     name: Create Release
     runs-on: ubuntu-latest
@@ -75,6 +76,7 @@ jobs:
         run: curl -H ''Authorization: Token ''"$secrets.GITHUB_TOKEN"'''' -X POST -H ''Content-type: application/json'' --data ''{"title":"Prepare Release and crates.io publishing", "head":"master", "base":"release", "draft":false, "body":"Automatic PR to the release branch as preperation to publish the library"}'' https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls > /dev/null
 
   deploy:
+    needs: prepare_release
     if: ${{ github.ref == 'refs/heads/release' }}
     name: Create Release
     runs-on: ubuntu-latest
