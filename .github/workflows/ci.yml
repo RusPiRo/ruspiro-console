@@ -25,9 +25,16 @@ jobs:
           override: true
           components: rustfmt, clippy, rust-src, llvm-tools-preview
           target: aarch64-unknown-none
+
       - name: Install Cargo Make
         uses: davidB/rust-cargo-make@v1
         with:
           version: 'latest'
+
+      - name: Remove patches if not a PR build
+        run: sed -i "/{^\[patch\.crates-io\] /{:a;N;/\Z}/!ba};/^ruspiro-.*\(git\|path\).*/d" Cargo.toml;
+        if: ${{ github.event_name != 'pull_request' }}
+
       - name: Compile
         run: cargo make pi3
+
