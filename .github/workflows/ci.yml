@@ -73,7 +73,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create PR against the release branch
-        run: curl -H ''Authorization: Token ''"$secrets.GITHUB_TOKEN"'''' -X POST -H ''Content-type: application/json'' --data ''{"title":"Prepare Release and crates.io publishing", "head":"master", "base":"release", "draft":false, "body":"Automatic PR to the release branch as preperation to publish the library"}'' https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls > /dev/null
+        uses: tretuna/sync-branches@1.2.0
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          FROM_BRANCH: "development"
+          TO_BRANCH: "release"
+          PULL_REQUEST_TITLE: "Prepare Release and crates.io publishing"
+          PULL_REQUEST_BODY: "Automatic PR to the release branch as preperation to publish the library"
 
   deploy:
     needs: prepare_release
