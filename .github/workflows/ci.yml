@@ -38,3 +38,28 @@ jobs:
       - name: Compile
         run: cargo make pi3
 
+  publish_dry:
+    name: Run Cargo Publish Dry-Run
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the current code from github into the CI machine
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Rust Nightly and Cargo
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy, rust-src, llvm-tools-preview
+          target: aarch64-unknown-none
+
+      - name: Install Cargo Make
+        uses: davidB/rust-cargo-make@v1
+        with:
+          version: 'latest'
+        
+      - name: Publish-Dry-Run
+        run: cargo make publish_dry
