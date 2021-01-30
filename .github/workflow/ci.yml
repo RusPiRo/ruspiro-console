@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - development
+      - release
+
+jobs:
+  build:
+    name: Compile The Crate
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the current code from github into the CI machine
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Rust Nightly and Cargo
+        - uses: actions-rs/toolchain@v1
+          with:
+            profile: minimal
+            toolchain: nightly
+            override: true
+            components: rustfmt, clippy, rust-src, llvm-tools-preview
+            target: aarch64-unknown-none
+        - uses: davidB/rust-cargo-make@v1
+          with:
+            version: 'latest'
+        - name: Compile
+          run: cargo make pi3
+
+
