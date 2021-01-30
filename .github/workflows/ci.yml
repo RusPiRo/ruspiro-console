@@ -2,6 +2,9 @@ name: CI
 
 on:
   pull_request:
+    branches:
+      - development
+      - release
   push:
     branches:
       - development
@@ -147,7 +150,7 @@ jobs:
           version: 'latest'
 
       - name: Get current version
-        run: echo 'CRATE_VERSION=v'$(sed -En 's/^version.*=.*\"(.*)\".*$/\1/p' < Cargo.toml) >> $GITHUB_ENV
+        run: echo 'CRATE_VERSION='$(sed -En 's/^version.*=.*\"(.*)\".*$/\1/p' < Cargo.toml) >> $GITHUB_ENV
       
       - name: Update version place holder in files
         run: |
