@@ -93,18 +93,18 @@ jobs:
       - name: Prepre Crate Release Version
         run: |
           # extract current crate version from Cargo.toml
-          export CRATE_VERSION=v`sed -En 's/^version.*=.*\"(.*)\".*$/\1/p' < Cargo.toml`
+          echo 'CRATE_VERSION=v`sed -En 's/^version.*=.*\"(.*)\".*$/\1/p' < Cargo.toml`' >> $GITHUB_ENV
           # retrieve last release version from github
-          export LAST_VERSION="$(curl --silent "https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')"
-          export LAST_VERSION=${LAST_VERSION:-v0.0.0}
-          echo $CRATE_VERSION
-          echo $LAST_VERSION
+          echo 'LAST_VERSION="$(curl --silent "https://api.github.com/repos/${{ GITHUB_REPOSITORY }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')"' >> $GITHUB_ENV
+          echo 'LAST_VERSION=${LAST_VERSION:-v0.0.0}' >> $GITHUB_ENV
+          echo ${{ env.CRATE_VERSION }}
+          echo ${{ env.LAST_VERSION }}
           git config --local user.name "2ndTaleStudio"
           git config --local user.email "43264484+2ndTaleStudio@users.noreply.github.com"
           # create the TAG required for the release
-          git tag $CRATE_VERSION -m "$CRATE_VERSION"
+          git tag ${{ env.CRATE_VERSION }} -m "${{ env.CRATE_VERSION }}"
           # extract the release notes of the current release from the changelog
-          sed -En '/##.*:.*:.*'"$LAST_VERSION"'/q;p' CHANGELOG.md > RELEASENOTES.md
+          sed -En '/##.*:.*:.*'"${{ env.LAST_VERSION }}"'/q;p' CHANGELOG.md > RELEASENOTES.md
           sed -i -e 's/^# Changelog/# Release Notes/g' RELEASENOTES.md
 
       - name: Create Release
@@ -113,8 +113,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ CRATE_VERSION }}
-          release_name: Release ${{ CRATE_VERSION }}
+          tag_name: ${{ env.CRATE_VERSION }}
+          release_name: Release ${{ env.CRATE_VERSION }}
           body_path: RELEASENOTES.md
           draft: false
           prerelease: false
