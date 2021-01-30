@@ -40,6 +40,22 @@
 //!     println!("Console is ready and display's through uart");
 //! }
 //! ```
+//! Setting up the logger will also setup the console to use `print!` and `println!` macros, but also allows the usage
+//! of `info!`, `warn!` and `error!` macros from teh `log` crate.
+//! ```ignore
+//! use ruspiro_console::*;
+//! use ruspiro_uart::*; // as we demonstrate with the Uart as output device/channel.
+//!
+//! fn main() {
+//!     let mut uart = Uart1::new(); // create a new uart struct
+//!     if uart.initialize(250_000_000, 115_200).is_ok() { // initialize the Uart with fixed core rate and baud rate
+//!         init_logger(LevelFilter::Error, uart); // from this point the logger takes ownership of uart
+//!     }
+//!
+//!     // if everything went fine uart should be assigned to the console for generic output
+//!     println!("Console is ready and display's through uart");
+//! }
+//! ```
 
 pub extern crate alloc;
 
@@ -49,53 +65,96 @@ pub use macros::*;
 
 use alloc::boxed::Box;
 use core::fmt;
+#[doc(inline)]
+pub use log::{debug, error, info, log, trace, warn, LevelFilter};
 use ruspiro_singleton::Singleton;
 
+/// initializie the logger using the provided `Writer` as the output channel. This should be called as soon as possible
+/// in the bare-metal kernel to enable logging.
+///
+/// A typical use case would be to initialize an UART and pass this (assuming it implements the `Write` trait to this
+/// function. As this function stores the actual writer into a thread safe `Singleton` using atomic operations it need
+/// to be ensured atomics are available and can be used. On a Raspberry Pi this means, the MMU need to be configured and
+/// enabled first.
+pub fn init_logger<T>(max_level: LevelFilter, writer: T) -> Result<(), log::SetLoggerError>
+where
+  T: fmt::Write + Send + Sync + 'static,
+{
+  CONSOLE.with_mut(|c| c.replace(writer));
+  log::set_logger(&LOGGER).map(|_| log::set_max_level(max_level))
+}
+
+static LOGGER: Logger = Logger {};
+
+struct Logger {}
+
+impl log::Log for Logger {
+  fn enabled(&self, metadata: &log::Metadata) -> bool {
+    metadata.level() <= log::Level::Info
+  }
+
+  fn log(&self, record: &log::Record) {
+    if self.enabled(record.metadata()) {
+      _print(format_args!(
+        "{} - {}:{} - {}\n",
+        record.level(),
+        record.module_path().unwrap_or("unknown source"),
+        record.line().unwrap_or(0),
+        record.args()
+      ));
+    }
+  }
+
+  fn flush(&self) {}
+}
+
 /// The Console singleton used by print! and println! macros
+/// The console can be configured without the `init_logger` function if logging is not required but `print!` and
+/// `println` macros only.
 pub static CONSOLE: Singleton<Console> = Singleton::new(Console {
-    current: None,
-    default: DefaultConsole {},
+  current: None,
+  default: DefaultConsole {},
 });
 
 #[doc(hidden)]
 /// The base printing function hidden behind the print! and println! macro. This function forwards all calls to the
 /// generic console which writes the string to the assigned output channel.
 pub fn _print(args: fmt::Arguments) {
-    // pass the string to the actual configured console to be printed
-    CONSOLE.with_mut(|console| {
-        if let Some(ref mut writer) = console.current {
-            writer
-                .write_fmt(args)
-                .expect("writing to console should never fail");
-        }
-    });
+  // pass the string to the actual configured console to be printed
+  CONSOLE.with_mut(|console| {
+    if let Some(ref mut writer) = console.current {
+      writer
+        .write_fmt(args)
+        .expect("writing to console should never fail");
+    }
+  });
 }
 
 /// The representation of the abstract console
 #[allow(dead_code)]
 pub struct Console {
-    current: Option<Box<dyn fmt::Write + Send + Sync>>,
-    default: DefaultConsole,
+  current: Option<Box<dyn fmt::Write + Send + Sync>>,
+  default: DefaultConsole,
 }
 
 impl Console {
-    /// Replacing the current active console. Once the new has been set the [drop] function of the previous one is
-    /// called. The Console takes ownership of the active once. Access to the active console outside the abstraction
-    /// is not possible and should not be.
-    pub fn replace<T>(&mut self, console: T)
-    where
-        T: fmt::Write + Send + Sync,
-        T: 'static,
-    {
-        self.current.replace(Box::from(console));
-    }
+  /// Replacing the current active console. Once the new has been set the [drop] function of the previous one is
+  /// called. The Console takes ownership of the active once. Access to the active console outside the abstraction
+  /// is not possible and should not be.
+  pub fn replace<T>(&mut self, console: T)
+  where
+    T: fmt::Write + Send + Sync,
+    T: 'static,
+  {
+    self.current.replace(Box::from(console));
+  }
 }
 
 /// The default console is a kind of fall back that prints nothing...
 struct DefaultConsole;
 
 impl fmt::Write for DefaultConsole {
-    fn write_str(&mut self, _s: &str) -> fmt::Result {
-        Ok(())
-    }
+  fn write_str(&mut self, _s: &str) -> fmt::Result {
+    Ok(())
+  }
 }
