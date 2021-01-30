@@ -82,7 +82,7 @@ jobs:
           PULL_REQUEST_BODY: "Automatic PR to the release branch as preperation to publish the library"
 
   deploy:
-    needs: prepare_release
+    needs: [build, publish_dry]
     if: ${{ github.ref == 'refs/heads/release' }}
     name: Create Release
     runs-on: ubuntu-latest
