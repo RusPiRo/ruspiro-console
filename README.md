@@ -2,7 +2,7 @@
 
 This crate provides a console abstraction to enable string output to a configurable output channel. It also provides the convinient macros (``print!`` and ``println!``) to output text that are usually not  available in ``[no_std]`` environments. However this crate also provide macros to indicate the severity of the message that shall be printed. Those are ``info!``, ``warn!`` and ``error!``.
 
-[![Travis-CI Status](https://api.travis-ci.com/RusPiRo/ruspiro-console.svg?branch=master)](https://travis-ci.com/RusPiRo/ruspiro-console)
+![CI](https://github.com/RusPiRo/ruspiro-console/workflows/CI/badge.svg?branch=development)
 [![Latest Version](https://img.shields.io/crates/v/ruspiro-console.svg)](https://crates.io/crates/ruspiro-console)
 [![Documentation](https://docs.rs/ruspiro-console/badge.svg)](https://docs.rs/ruspiro-console)
 [![License](https://img.shields.io/crates/l/ruspiro-console.svg)](https://github.com/RusPiRo/ruspiro-console#license)
