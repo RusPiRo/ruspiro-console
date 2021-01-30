@@ -19,15 +19,15 @@ jobs:
 
       - name: Install Rust Nightly and Cargo
         uses: actions-rs/toolchain@v1
-          with:
-            profile: minimal
-            toolchain: nightly
-            override: true
-            components: rustfmt, clippy, rust-src, llvm-tools-preview
-            target: aarch64-unknown-none
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+          components: rustfmt, clippy, rust-src, llvm-tools-preview
+          target: aarch64-unknown-none
       - name: Install Cargo Make
         uses: davidB/rust-cargo-make@v1
-          with:
-            version: 'latest'
+        with:
+          version: 'latest'
       - name: Compile
         run: cargo make pi3
